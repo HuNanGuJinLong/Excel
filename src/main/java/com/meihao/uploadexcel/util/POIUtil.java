@@ -240,6 +240,8 @@ public class POIUtil {
         return cellValue;
     }
 
+    //psvm
+
     // 读取excel文件
     public static List<String[]> readExcel(String filePath) throws IOException {
         //检查文件
@@ -284,6 +286,11 @@ public class POIUtil {
             workbook.close();
         }
         return list;
+    }
+
+    // psvm
+    public static void main(String[] args) {
+
     }
 }
 
