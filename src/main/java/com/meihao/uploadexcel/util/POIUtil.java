@@ -239,5 +239,51 @@ public class POIUtil {
         }
         return cellValue;
     }
+
+    // 读取excel文件
+    public static List<String[]> readExcel(String filePath) throws IOException {
+        //检查文件
+        checkFile(filePath);
+        //获得Workbook工作薄对象
+        Workbook workbook = getWorkBook(filePath);
+        //创建返回对象，把每行中的值作为一个数组，所有行作为一个集合返回
+        List<String[]> list = new ArrayList<String[]>();
+        if (workbook != null) {
+            //循环所有的工作表sheet对象
+            for (int sheetNum = 0; sheetNum < workbook.getNumberOfSheets(); sheetNum++) {
+                //获得当前sheet工作表
+                Sheet sheet = workbook.getSheetAt(sheetNum);
+                if (sheet == null) {
+                    continue;
+                }
+                //获得当前sheet的开始行
+                int firstRowNum = sheet.getFirstRowNum();
+                //获得当前sheet的结束行
+                int lastRowNum = sheet.getLastRowNum();
+                //循环所有行
+                for (int rowNum = firstRowNum; rowNum <= lastRowNum; rowNum++) {
+                    //获得当前行
+                    Row row = sheet.getRow(rowNum);
+                    if (row == null) {
+                        continue;
+                    }
+                    //获得当前行的开始列
+                    int firstCellNum = row.getFirstCellNum();
+                    //获得当前行的列数
+                    int lastCellNum = row.getPhysicalNumberOfCells();
+                    String[] cells = new String[lastCellNum];
+                    //循环当前行
+                    for (int cellNum = firstCellNum; cellNum < lastCellNum; cellNum++) {
+                        //获取单元格信息
+                        Cell cell = row.getCell(cellNum);
+                        cells[cellNum] = getCellValue(cell);
+                    }
+                    list.add(cells);
+                }
+            }
+            workbook.close();
+        }
+        return list;
+    }
 }
 
